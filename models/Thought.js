@@ -65,7 +65,7 @@ thoughtSchema.virtual("usernames").get(function () {
   return this.username.map((user) => user.username);
 });
 
-reactionCount.virtual("reactionCount").get(function () {
+thoughtSchema.virtual("reactionCount").get(function () {
   return this.reactions.length;
 })
 
