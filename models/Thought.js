@@ -1,6 +1,6 @@
 const { Schema, model, Types } = require("mongoose");
 
-const ReactionSchema = new Schema(
+const reactionSchema = new Schema(
   {
   reactionId: {
     type: Schema.Types.ObjectId,
@@ -9,7 +9,8 @@ const ReactionSchema = new Schema(
   reactionBody: {
     type: String,
     required: true,
-    maxlength: [280, "This reaction cannot be longer than 280 characters"]
+    min: [1, "There must be a valid character here!"],
+    max: [280, "This reaction cannot be longer than 280 characters"]
   },
   username: {
     type: String,
@@ -22,20 +23,21 @@ const ReactionSchema = new Schema(
 },
 {
   toJSON: {
-    virtuals: true
+    virtuals: true,
+    getters: true
   }
 }
 );
 
 
-const ThoughtSchema = new Schema(
+const thoughtSchema = new Schema(
   {
     thoughtText: {
       type: String,
       required: "A valid thought is required",
       trim: true,
-      minlength: [1, "A thought must be at least 1 character long"],
-      maxlength: [280, "A thought must be less than 280 characters long"],
+      min: [1, "A thought must be at least 1 character long"],
+      max: [280, "A thought must be less than 280 characters long"],
     },
     createdAt: {
       type: Date,
@@ -48,6 +50,7 @@ const ThoughtSchema = new Schema(
         required: true
       },
     ],
+      reactions: [reactionSchema],
   },
   {
     toJSON: {
@@ -58,7 +61,7 @@ const ThoughtSchema = new Schema(
 
 
 
-ThoughtSchema.virtual("usernames").get(function () {
+thoughtSchema.virtual("usernames").get(function () {
   return this.username.map((user) => user.username);
 });
 
@@ -66,6 +69,6 @@ reactionCount.virtual("reactionCount").get(function () {
   return this.reactions.length;
 })
 
-const Thought = model("Thought", ThoughtSchema);
+const Thought = model("Thought", thoughtSchema);
 
 module.exports = Thought;

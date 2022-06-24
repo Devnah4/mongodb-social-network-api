@@ -25,17 +25,16 @@ const UserSchema = new Schema({
 },
 {
     toJSON: {
-        virtuals: true
+        virtuals: true,
+        getters: true
     },
 })
 
 
-// Creates the virtual for the thoughts
-UserSchema.virtual('thoughtsCount').get(function() {
-    // Returns the number of thoughts the user has
-    return this.thoughts.reduce((total, thoughts) => {
-        return total + thoughts.length;
-    })
+// Creates the virtual for the friend relation
+UserSchema.virtual('friendCount').get(function() {
+    // Returns the number of friends the user has
+    return this.friends.length;;
 })
 
 // Creates a User model using UserSchema
