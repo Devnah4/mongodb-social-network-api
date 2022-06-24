@@ -12,7 +12,7 @@ app.use(express.static('public'));
 app.use(require('./routes'));
 
 // Creates the MongoDB connection
-// process.env.Databasename will state what you're connecting to otherwise it will default to the lcal MongoDb server
+// process.env.DatabaseName will state what you're connecting to otherwise it will default to the lcal MongoDb server
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/mongodb-social-network-api', {
     useNewUrlParser: true,
     useUnifiedTopology: true
