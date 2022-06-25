@@ -59,8 +59,6 @@ const thoughtSchema = new Schema(
   }
 );
 
-
-
 thoughtSchema.virtual("usernames").get(function () {
   return this.username.map((user) => user.username);
 });
