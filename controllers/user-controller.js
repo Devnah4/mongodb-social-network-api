@@ -34,7 +34,7 @@ const userController = {
             .select('-__v')
             .then(userData => {
                 if (!userData) {
-                    res.status(404).json({ message: 'User not found' });
+                    res.status(404).json({ message: 'User not found!' });
                     return;
                 }
                 res.json(userData)
@@ -50,7 +50,7 @@ const userController = {
         User.findOneAndUpdate({ _id: params.id }, body, { runValidators: true, new: true })
             .then(userData => {
                 if (!userData) {
-                    res.status(404).json({ message: 'User not found' });
+                    res.status(404).json({ message: 'User not found!' });
                     return;
                 }
                 res.json(userData);
@@ -62,6 +62,20 @@ const userController = {
     },
 
     // DELETE /users/:id - deletes a user
+    deleteUser({ params }, res) {
+        User.findOneAndDelete({ _id: params.id })
+            .then(userData => {
+                if (!userData) {
+                    res.status(404).json({ message: 'User not found!' });
+                    return;
+                }
+                res.json(userData);
+            }).catch(err => {
+                console.log(err);
+                res.status(500).json(err);
+            }
+            )
+    },
 
 
 }
