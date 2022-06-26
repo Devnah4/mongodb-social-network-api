@@ -11,14 +11,17 @@ const UserSchema = new Schema({
         type: String,
         required: 'A valid email is required',
         unique: true,
-        validate: [validateEmail, 'Please enterl a valid email address'],
-        match: [/^.+@(?:[\w-]+\.)+\w+$/, 'Please enter a valid email address'],
+        validate: {
+            validator: function(email) {
+                return /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email);
+            }
+        }
     },
     thoughts: [{
         type: Schema.Types.ObjectId,
         ref: 'Thought'
     }],
-    friends: [{
+    friend: [{
         type: Schema.Types.ObjectId,
         ref: 'User'
     }]
@@ -28,13 +31,14 @@ const UserSchema = new Schema({
         virtuals: true,
         getters: true
     },
-})
+    id: false
+});
 
 
 // Creates the virtual for the friend relation
 UserSchema.virtual('friendCount').get(function() {
     // Returns the number of friends the user has
-    return this.friends.length;;
+    return this.friend.length;;
 })
 
 // Creates a User model using UserSchema
