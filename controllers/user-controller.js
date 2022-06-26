@@ -26,7 +26,7 @@ const userController = {
     // GET /users/:id - returns a single user
     userId({ params }, res) {
         User.findOne({ _id: params.id })
-            .populate('friends')
+            .populate('friend')
             .populate({
                 path: 'thoughts',
                 select: '__v',
@@ -77,6 +77,41 @@ const userController = {
             )
     },
 
+    // POST /users/:id/friends/:id - adds a friend to a user
+    addFriend({ params }, res) {
+        User.findOneAndUpdate({ _id: params.id }, 
+            { $addToSet: { friend: params.friendId } }, 
+            { runValidators: true, new: true })
+            .then(userData => {
+                if (!userData) {
+                    res.status(404).json({ message: 'This user can not add a friend!' });
+                    return;
+                }
+                res.json(userData);
+            }).catch(err => {
+                console.log(err);
+                res.status(500).json(err);
+            })
+    },
+
+    // DELETE /users/:id/friends/:id - removes a friend from a user
+    deleteFriend({ params }, res) {
+        User.findOneAndUpdate(
+            { _id: params.id }, 
+            { $pull: { friend: params.friendId } }, 
+            { runValidators: true, new: true })
+            .then(userData => {
+                if (!userData) {
+                    res.status(404).json({ message: 'This friend does not exist!' });
+                    return;
+                }
+                res.json(userData);
+            }).catch(err => {
+                console.log(err);
+                res.status(500).json(err);
+            }
+            )
+    },
 
 }
 
