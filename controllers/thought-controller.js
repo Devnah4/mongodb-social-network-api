@@ -6,14 +6,14 @@ const thoughtController = {
         Thought.create(body)
         .then(({ _id }) => {
             return User.findOneAndUpdate (
-                { _id: body.user },
+                { _id: body.userId },
                 { $push: { thoughts: _id } },
                 { runValidators: true, new: true }
             );
         })
         .then(userData => {
             if (!userData) {
-                res.status(404).json({ message: 'User not found!' });
+                res.status(404).json({ message: 'No User to connect to!' });
                 return;
             }
             res.json(userData);
@@ -35,7 +35,7 @@ const thoughtController = {
         },
 
         // GET /thoughts/:id - returns a single thought
-        singleThought(req, res) {
+        singleThought({ params }, res) {
             Thought.findOne({ _id: params.id })
             .then(thoughtData => {
                 if (!thoughtData) {

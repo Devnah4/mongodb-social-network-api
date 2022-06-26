@@ -31,7 +31,8 @@ const UserSchema = new Schema({
         virtuals: true,
         getters: true
     },
-})
+    id: false
+});
 
 
 // Creates the virtual for the friend relation
