@@ -1,6 +1,6 @@
 const router = require('express').Router();
 // Holds all the route values in an object
-const { allThought, makeThought, singleThought } = require('../../controllers/thought-controller');
+const { allThought, makeThought, singleThought, updateThought, removeThought } = require('../../controllers/thought-controller');
 
 
 //  /api/thoughts routes for pulling and creating
@@ -10,7 +10,9 @@ router.route('/')
 
 // /api/thoughts/:id routes for pulling and updating
 router.route('/:id')
-    .get(singleThought);
+    .get(singleThought)
+    .put(updateThought)
+    .delete(removeThought);
     
 
 module.exports = router;  
