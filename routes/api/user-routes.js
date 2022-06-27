@@ -1,6 +1,6 @@
 const router = require('express').Router();
 // Holds all the route values in an object
-const { getUsers, makeUser, userId, updateUser, deleteUser, addFriend, deleteFriend } = require('../../controllers/user-controller');
+const { getUsers, makeUser, getUsersId, updateUser, deleteUser, addFriend, deleteFriend } = require('../../controllers/user-controller');
 
 
 //  /api/users routes for pulling and creating
@@ -10,7 +10,7 @@ router.route('/')
 
 // /api/users/:id routes for pulling and updating
 router.route('/:id')
-    .get(userId)
+    .get(getUsersId)
     .put(updateUser)
     .delete(deleteUser);
 
